@@ -1,13 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	mode: 'development',
 
 	entry: {
-		1: './src/1.js',
-		2: './src/2.js'
+		adminTopbar: './src/Admin/Topbar.js',
+		adminSidebar: './src/Admin/Sidebar.js',
+		adminDashboard: './src/Admin/Dashboard.js'
 	},
 
 	output: {
@@ -17,7 +19,10 @@ module.exports = {
 
 	plugins: [
 		new webpack.ProgressPlugin(),
-		new HtmlWebpackPlugin()
+		new HtmlWebpackPlugin(),
+		new webpack.DefinePlugin({
+			'process.env.NODE_ENV': JSON.stringify('production')
+		})
 	],
 
 	module: {
@@ -45,21 +50,28 @@ module.exports = {
 
 	optimization: {
 		splitChunks: {
+			chunks: 'all',
+			automaticNameDelimiter: '.',
 			cacheGroups: {
 				vendors: {
-					priority: -10,
-					test: /[\\/]node_modules[\\/]/
+					test: /[\\/]node_modules[\\/]/,
+					name: 'vendor'
 				}
-			},
-
-			chunks: 'async',
-			minChunks: 1,
-			minSize: 30000,
-			name: true
-		}
+			}
+		},
+		minimizer: [
+			new UglifyJsPlugin({
+				uglifyOptions: {
+					output: {
+						comments: false
+					}
+				}
+			})
+		]
 	},
 
 	devServer: {
-		open: true
+		open: true,
+		disableHostCheck: true
 	}
 };
