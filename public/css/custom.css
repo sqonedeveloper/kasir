@@ -163,7 +163,7 @@ tr:hover .row-actions {
 }
 
 .has-danger .form-control {
-   background-image: url('/assets/img/danger.svg');
+   background-image: url('/img/danger.svg');
    padding-right: 2.25rem;
    background-repeat: no-repeat;
    background-position: center right .5625rem;
@@ -182,7 +182,7 @@ table .user-avatar {
 
 .table-borderless td,
 .table-borderless th {
-    border: 0;
+   border: 0;
 }
 
 .no-padding td {

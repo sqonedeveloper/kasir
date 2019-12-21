@@ -1,21 +1,5 @@
 <?php
 
-function jenjangProdi($key) {
-	$config = [
-		'1' => 'S-3',
-		'2' => 'S-2',
-		'3' => 'S-1',
-		'4' => 'D-4',
-		'5' => 'D-3',
-		'6' => 'D-2',
-		'7' => 'D-1',
-		'8' => 'Sp-1',
-		'9' => 'Sp-2',
-		'10' => 'Profesi'
-	];
-	return $config[$key];
-}
-
 function tanggalIndonesia($tanggal, $separator = ' ') {
 	$content = explode('-', $tanggal);
 	$tahun = $content[0];
@@ -91,32 +75,6 @@ function hari($content) {
 	return $hari_ini;
 }
 
-function namaLengkap($depan, $nama, $belakang) {
-	$html = $depan;
-	if (!empty($depan))
-		$html .= '. ';
-	$html .= $nama;
-	if (!empty($belakang))
-		$html .= ', ';
-	$html .= $belakang;
-	return $html;
-}
-
-function jekel($key) {
-	$config = [
-		'1' => 'Laki - Laki',
-		'2' => 'Perempuan'
-	];
-
-	return $config[$key];
-}
-
-function stsKawin($key) {
-	$config = [
-		'1' => 'Kawin',
-		'2' => 'Belum Kawin',
-		'3' => 'Duda',
-		'4' => 'Janda'
-	];
-	return $config[$key];
+function replaceDotWithEmptyString($str) {
+	return str_replace('.', '', $str);
 }

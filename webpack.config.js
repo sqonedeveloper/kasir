@@ -9,7 +9,15 @@ module.exports = {
 	entry: {
 		adminTopbar: './src/Admin/Topbar.js',
 		adminSidebar: './src/Admin/Sidebar.js',
-		adminDashboard: './src/Admin/Dashboard.js'
+		adminDashboard: './src/Admin/Dashboard.js',
+		adminSupplierLists: './src/Admin/Supplier/Lists.js',
+		adminSupplierForms: './src/Admin/Supplier/Forms.js',
+		adminProdukKategori: './src/Admin/Produk/Kategori.js',
+		adminProdukSatuan: './src/Admin/Produk/Satuan.js',
+		adminProdukLists: './src/Admin/Produk/DataProduk/Lists.js',
+		adminProdukForms: './src/Admin/Produk/DataProduk/Forms.js',
+		adminStokMasukLists: './src/Admin/Stok/Masuk/Lists.js',
+		adminStokMasukForms: './src/Admin/Stok/Masuk/Forms.js',
 	},
 
 	output: {

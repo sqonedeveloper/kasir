@@ -12,8 +12,12 @@ class AdminController extends Controller {
       'autoload'
    ];
 
+   var $app;
+
    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger) {
       parent::initController($request, $response, $logger);
+
+      $this->app = new \Config\App();
    }
 
    public function template($content = []) {
@@ -54,7 +58,117 @@ class AdminController extends Controller {
    }
 
    private function _generateNavigation() {
-      $config = [];
+      $config = [
+         [
+            'label' => 'Dashboard',
+            'icon' => 'mdi mdi-gauge',
+            'active' => ['dashboard'],
+            'url' => '/admin/dashboard',
+            'sub' => false
+         ],
+         [
+            'label' => 'Supplier',
+            'icon' => 'mdi mdi-gauge',
+            'active' => ['supplier'],
+            'url' => '/admin/supplier',
+            'sub' => false
+         ],
+         [
+            'label' => 'Produk',
+            'icon' => 'mdi mdi-gauge',
+            'active' => ['produk'],
+            'url' => '#',
+            'sub' => true,
+            'child' => [
+               [
+                  'label' => 'Kategori',
+                  'active' => ['kategori'],
+                  'url' => '/admin/produk/kategori'
+               ],
+               [
+                  'label' => 'Satuan',
+                  'active' => ['satuan'],
+                  'url' => '/admin/produk/satuan'
+               ],
+               [
+                  'label' => 'Data Produk',
+                  'active' => ['dataProduk'],
+                  'url' => '/admin/produk/dataProduk'
+               ]
+            ]
+         ],
+         [
+            'label' => 'Stok',
+            'icon' => 'mdi mdi-gauge',
+            'active' => ['stok'],
+            'url' => '#',
+            'sub' => true,
+            'child' => [
+               [
+                  'label' => 'Masuk',
+                  'active' => ['masuk'],
+                  'url' => '/admin/stok/masuk'
+               ],
+               [
+                  'label' => 'Keluar',
+                  'active' => ['keluar'],
+                  'url' => '/admin/stok/keluar'
+               ]
+            ]
+         ],
+         [
+            'label' => 'Transaksi',
+            'icon' => 'mdi mdi-gauge',
+            'active' => ['transaksi'],
+            'url' => '#',
+            'sub' => true,
+            'child' => [
+               [
+                  'label' => 'Penjualan',
+                  'active' => ['penjualan'],
+                  'url' => '/admin/transaksi/penjualan'
+               ]
+            ]
+         ],
+         [
+            'label' => 'Laporan',
+            'icon' => 'mdi mdi-gauge',
+            'active' => ['laporan'],
+            'url' => '#',
+            'sub' => true,
+            'child' => [
+               [
+                  'label' => 'Penjualan',
+                  'active' => ['penjualan'],
+                  'url' => '/admin/laporan/penjualan'
+               ],
+               [
+                  'label' => 'Stok Masuk',
+                  'active' => ['stokMasuk'],
+                  'url' => '/admin/laporan/stokMasuk'
+               ],
+               [
+                  'label' => 'Stok Keluar',
+                  'active' => ['stokKeluar'],
+                  'url' => '/admin/laporan/stokKeluar'
+               ]
+            ]
+         ],
+         [
+            'label' => 'Akun',
+            'icon' => 'mdi mdi-gauge',
+            'active' => ['akun'],
+            'url' => '/admin/akun',
+            'sub' => false
+         ],
+         [
+            'label' => 'Settings',
+            'icon' => 'mdi mdi-gauge',
+            'active' => ['settings'],
+            'url' => '/admin/settings',
+            'sub' => false
+         ],
+      ];
       return $config;
    }
 

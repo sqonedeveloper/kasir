@@ -76,6 +76,49 @@ $routes->get('/', 'Home::index');
 
 $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($routes) {
 	$routes->get('dashboard', 'Dashboard::index');
+
+	$routes->get('supplier', 'Supplier::index');
+	$routes->group('supplier', function($routes) {
+		$routes->get('tambah', 'Supplier::tambah');
+		$routes->get('edit/(:num)', 'Supplier::edit/$1');
+		$routes->post('submit', 'Supplier::submit');
+		$routes->post('getData', 'Supplier::getData');
+		$routes->post('delete', 'Supplier::delete');
+	});
+
+	$routes->group('produk', ['namespace' => 'App\Controllers\Admin\Produk'], function($routes) {
+		$routes->get('kategori', 'Kategori::index');
+		$routes->group('kategori', function($routes) {
+			$routes->get('edit/(:num)', 'Kategori::edit/$1');
+			$routes->post('submit', 'Kategori::submit');
+			$routes->post('getData', 'Kategori::getData');
+			$routes->post('delete', 'Kategori::delete');
+		});
+
+		$routes->get('satuan', 'Satuan::index');
+		$routes->group('satuan', function($routes) {
+			$routes->get('edit/(:num)', 'Satuan::edit/$1');
+			$routes->post('submit', 'Satuan::submit');
+			$routes->post('getData', 'Satuan::getData');
+			$routes->post('delete', 'Satuan::delete');
+		});
+
+		$routes->get('dataProduk', 'Produk::index');
+		$routes->group('dataProduk', function($routes) {
+			$routes->get('tambah', 'Produk::tambah');
+			$routes->get('edit/(:num)', 'Produk::edit/$1');
+			$routes->post('submit', 'Produk::submit');
+			$routes->post('getData', 'Produk::getData');
+			$routes->post('delete', 'Produk::delete');
+		});
+	});
+
+	$routes->group('stok', ['namespace' => 'App\Controllers\Admin\Stok'], function($routes) {
+		$routes->get('masuk', 'Masuk::index');
+		$routes->group('masuk', function($routes) {
+			$routes->get('tambah', 'Masuk::tambah');
+		});
+	});
 });
 
 /**
