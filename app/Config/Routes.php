@@ -117,7 +117,31 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($rout
 		$routes->get('masuk', 'Masuk::index');
 		$routes->group('masuk', function($routes) {
 			$routes->get('tambah', 'Masuk::tambah');
+			$routes->post('submit', 'Masuk::submit');
+			$routes->post('getData', 'Masuk::getData');
 		});
+		
+		$routes->get('keluar', 'Keluar::index');
+		$routes->group('keluar', function($routes) {
+			$routes->get('tambah', 'Keluar::tambah');
+			$routes->post('submit', 'Keluar::submit');
+			$routes->post('getData', 'Keluar::getData');
+		});
+	});
+
+	$routes->get('akun', 'Akun::index');
+	$routes->group('akun', function($routes) {
+		$routes->get('tambah', 'Akun::tambah');
+		$routes->get('profile', 'Akun::profile');
+		$routes->get('edit/(:num)', 'Akun::edit/$1');
+		$routes->post('getData', 'Akun::getData');
+		$routes->post('submit', 'Akun::submit');
+		$routes->post('delete', 'Akun::delete');
+	});
+
+	$routes->get('settings', 'Settings::index');
+	$routes->group('settings', function($routes) {
+		$routes->post('submit', 'Settings::submit');
 	});
 });
 

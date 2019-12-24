@@ -18,6 +18,12 @@ module.exports = {
 		adminProdukForms: './src/Admin/Produk/DataProduk/Forms.js',
 		adminStokMasukLists: './src/Admin/Stok/Masuk/Lists.js',
 		adminStokMasukForms: './src/Admin/Stok/Masuk/Forms.js',
+		adminStokKeluarLists: './src/Admin/Stok/Keluar/Lists.js',
+		adminStokKeluarForms: './src/Admin/Stok/Keluar/Forms.js',
+		adminAkunLists: './src/Admin/Akun/Lists.js',
+		adminAkunForms: './src/Admin/Akun/Forms.js',
+		adminAkunProfile: './src/Admin/Akun/Profile.js',
+		adminSettings: './src/Admin/Settings.js',
 	},
 
 	output: {

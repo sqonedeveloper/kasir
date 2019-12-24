@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Container, Row, Col, Breadcrumb, Table, Button } from 'react-bootstrap'
+import { Container, Row, Col, Breadcrumb, Button, Table } from 'react-bootstrap'
 
 class Lists extends Component {
    componentDidMount() {
@@ -10,7 +10,7 @@ class Lists extends Component {
          processing: true,
          serverSide: true,
          ajax: {
-            url: siteURL + '/admin/stok/masuk/getData',
+            url: siteURL + '/admin/stok/keluar/getData',
             type: 'POST'
          },
          columns: [
@@ -18,7 +18,7 @@ class Lists extends Component {
             null,
             null,
             null,
-            { orderable: false }
+            null
          ]
       });
    }
@@ -40,7 +40,7 @@ class Lists extends Component {
                      variant="success"
                      className="waves-effect waves-light float-right"
                      size="sm"
-                     onClick={() => open(siteURL + '/admin/stok/masuk/tambah', '_parent')}
+                     onClick={() => open(siteURL + '/admin/stok/keluar/tambah', '_parent')}
                   >Tambah</Button>
                </Col>
             </Row>
@@ -54,7 +54,7 @@ class Lists extends Component {
                               <th>Nama Produk</th>
                               <th>Jumlah (Stok)</th>
                               <th>Tanggal</th>
-                              <th>Supplier</th>
+                              <th>Keterangan</th>
                            </tr>
                         </thead>
                      </Table>

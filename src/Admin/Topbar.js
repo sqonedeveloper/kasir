@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
+var sites = content.sites
+
 class Topbar extends Component {
    render() {
       return (
@@ -9,9 +11,8 @@ class Topbar extends Component {
             <nav className="navbar top-navbar navbar-expand-md navbar-light">
                <div className="navbar-header">
                   <a className="navbar-brand" href={siteURL}>
-                     <span>
-                        <LazyLoadImage src="https://wrappixel.com/demos/admin-templates/material-pro/assets/images/logo-text.png" effect="blur" className="dark-logo" />
-                        <LazyLoadImage src="https://wrappixel.com/demos/admin-templates/material-pro/assets/images/logo-light-text.png" effect="blur" className="light-logo" />
+                     <span style={{ fontWeight: 500, fontSize: 25 }}>
+                        {sites.nama_toko}
                      </span>
                   </a>
                </div>
@@ -23,14 +24,14 @@ class Topbar extends Component {
                   <ul className="navbar-nav my-lg-0">
                      <li className="nav-item dropdown">
                         <a className="nav-link dropdown-toggle text-muted waves-effect waves-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           <LazyLoadImage src={baseURL + 'assets/img/avatar.png'} effect="blur" className="profile-pic" />
+                           <LazyLoadImage src={baseURL + 'img/avatar.png'} effect="blur" className="profile-pic" />
                         </a>
                         <div className="dropdown-menu dropdown-menu-right scale-up">
                            <ul className="dropdown-user">
                               <li>
                                  <div className="dw-user-box">
                                     <div className="u-img">
-                                       <LazyLoadImage src={baseURL + 'assets/img/avatar.png'} effect="blur" />
+                                       <LazyLoadImage src={baseURL + 'img/avatar.png'} effect="blur" />
                                     </div>
                                     <div className="u-text">
                                        <h4>Fullname</h4>
@@ -39,7 +40,7 @@ class Topbar extends Component {
                                  </div>
                               </li>
                               <li role="separator" className="divider"></li>
-                              <li><a href={siteURL + '/admin/users/profile'}><i className="ti-user" /> My Profile</a></li>
+                              <li><a href={siteURL + '/admin/akun/profile'}><i className="ti-user" /> My Profile</a></li>
                               <li><a href={siteURL + '/login/logout'}><i className="fa fa-power-off" /> Logout</a></li>
                            </ul>
                         </div>

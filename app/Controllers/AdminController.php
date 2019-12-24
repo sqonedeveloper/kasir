@@ -41,6 +41,7 @@ class AdminController extends Controller {
       }
 
       $footerJs['navigation'] = $this->_generateNavigation();
+      $footerJs['sites'] = $this->_getDefaultSitesConfig();
       if (!empty($content['footerJs'])) {
          foreach ($content['footerJs'] as $key => $val) {
             $footerJs[$key] = $val;
@@ -55,6 +56,21 @@ class AdminController extends Controller {
       $data['footerJs'] = json_encode($footerJs);
 
       echo view('AdminPanel', $data);
+   }
+
+   private function _getDefaultSitesConfig() {
+      $db = \Config\Database::connect();
+      $table = $db->table('tb_settings');
+
+      $get = $table->get();
+      $data = $get->getRowArray();
+
+      $fieldNames = $get->getFieldNames();
+      $response = [];
+      foreach ($fieldNames as $key) {
+         $response[$key] = (string) $data[$key];
+      }
+      return $response;
    }
 
    private function _generateNavigation() {
@@ -120,15 +136,8 @@ class AdminController extends Controller {
             'label' => 'Transaksi',
             'icon' => 'mdi mdi-gauge',
             'active' => ['transaksi'],
-            'url' => '#',
-            'sub' => true,
-            'child' => [
-               [
-                  'label' => 'Penjualan',
-                  'active' => ['penjualan'],
-                  'url' => '/admin/transaksi/penjualan'
-               ]
-            ]
+            'url' => '/admin/transaksi',
+            'sub' => false
          ],
          [
             'label' => 'Laporan',

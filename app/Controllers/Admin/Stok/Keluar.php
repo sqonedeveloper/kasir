@@ -1,13 +1,13 @@
-<?php namespace App\Controllers\Admin\Stok;
+<?php namespace app\Controllers\Admin\Stok;
 
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use App\Controllers\AdminController;
-use App\Models\Admin\Stok\Masuk as Model;
-use App\Validation\Stok\Masuk as Validate;
+use App\Models\Admin\Stok\Keluar as Model;
+use App\Validation\Stok\Keluar as Validate;
 
-class Masuk extends AdminController {
+class Keluar extends AdminController {
 
    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger) {
       parent::initController($request, $response, $logger);
@@ -15,11 +15,11 @@ class Masuk extends AdminController {
 
    public function index() {
       $this->data = [
-         'title' => 'Stok Masuk',
+         'title' => 'Stok Keluar',
          'internalCss' => $this->app->datatable['css'],
          'internalJs' => [
             $this->app->datatable['js'],
-            'http://localhost:8080/adminStokMasukLists.js'
+            'http://localhost:8080/adminStokKeluarLists.js'
          ]
       ];
 
@@ -28,13 +28,12 @@ class Masuk extends AdminController {
 
    public function tambah() {
       $model = new Model();
-      $footerJs['listsSupplier'] = $model->getListSupplier();
       $footerJs['listsProduk'] = $model->getListsProduk();
 
       $this->data = [
-         'title' => 'Tambah Stok',
+         'title' => 'Tambah Stok Keluar',
          'pageType' => 'insert',
-         'internalJs' => ['http://localhost:8080/adminStokMasukForms.js'],
+         'internalJs' => ['http://localhost:8080/adminStokKeluarForms.js'],
          'footerJs' => $footerJs
       ];
 
@@ -53,6 +52,7 @@ class Masuk extends AdminController {
 
             $response['status'] = true;
             $response['msg_response'] = 'Data berhasil disimpan.';
+            $response['emptyPost'] = $this->emptyPost($post);
          } else {
             $response['msg_response'] = 'Terjadi sesuatu kesalahan?';
             $response['errors'] = \Config\Services::validation()->getErrors();
@@ -78,7 +78,7 @@ class Masuk extends AdminController {
             $result[] = $data['nama_produk'];
             $result[] = $data['stok'];
             $result[] = tanggalIndonesia($data['tanggal']);
-            $result[] = $data['detail'] === '1' ? $data['supplier'] : $data['detail_lainnya'];
+            $result[] = $data['keterangan'];
    
             $response[] = $result;
          }
