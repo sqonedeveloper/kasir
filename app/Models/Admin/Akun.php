@@ -5,9 +5,41 @@ use CodeIgniter\Model;
 class Akun extends Model {
 
    protected $db;
+   protected $idUsers;
 
-   public function __construct() {
+   public function __construct($idUsers = null) {
       $this->db = \Config\Database::connect();
+      $this->idUsers = $idUsers;
+   }
+
+   function submitUpdateProfile($post = []) {
+      unset($post['pageType'], $post['username']);
+
+      $table = $this->db->table('tb_users');
+
+      if (!empty($post['password'])) {
+         $post['password'] = password_hash($post['password'], PASSWORD_BCRYPT);
+      } else {
+         unset($post['password']);
+      }
+
+      $table->where('id', $this->idUsers);
+      $table->update($post);
+   }
+
+   function getDetailProfile() {
+      $table = $this->db->table('tb_users');
+      $table->select('nama, username, telp');
+      $table->where('id', $this->idUsers);
+
+      $get = $table->get();
+      $data = $get->getRowArray();
+
+      if (isset($data)) {
+         return $data;
+      } else {
+         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+      }
    }
 
    function deleteAkun($post = []) {
@@ -20,6 +52,7 @@ class Akun extends Model {
       $table = $this->db->table('tb_users');
       $table->select('nama, username, telp, role');
       $table->where('id', $id);
+      $table->where('id !=', $this->idUsers);
 
       $get = $table->get();
       $data = $get->getRowArray();
@@ -47,6 +80,8 @@ class Akun extends Model {
 
          if (!empty($post['password'])) {
             $post['password'] = password_hash($post['password'], PASSWORD_BCRYPT);
+         } else {
+            unset($post['password']);
          }
 
          $table->where('id', $post['id']);
@@ -63,6 +98,7 @@ class Akun extends Model {
    
    function countData() {
       $table = $this->db->table('tb_users');
+      $table->where('id !=', $this->idUsers);
       $get = $table->get();
       return count($get->getResult());
    }
@@ -76,6 +112,7 @@ class Akun extends Model {
    private function _queryData() {
       $table = $this->db->table('tb_users');
       $table->select('id, nama, username, telp, uploaded');
+      $table->where('id !=', $this->idUsers);
    
       $i = 0;
       $column_search = ['nama', 'username', 'telp'];

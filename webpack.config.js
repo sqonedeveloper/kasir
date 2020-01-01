@@ -24,6 +24,10 @@ module.exports = {
 		adminAkunForms: './src/Admin/Akun/Forms.js',
 		adminAkunProfile: './src/Admin/Akun/Profile.js',
 		adminSettings: './src/Admin/Settings.js',
+		login: './src/Login.js',
+		adminTransaksiLists: './src/Admin/Transaksi/Lists.js',
+		adminTransaksiForms: './src/Admin/Transaksi/Forms.js',
+		adminTransaksiCetak: './src/Admin/Transaksi/CetakStruk.js',
 	},
 
 	output: {

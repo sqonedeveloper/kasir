@@ -58,7 +58,7 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
  * only routes that have been defined here will be available.
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Home');
+$routes->setDefaultController('Login');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -72,7 +72,12 @@ $routes->setAutoRoute(false);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Login::index');
+$routes->get('login', 'Login::index');
+$routes->group('login', function($routes) {
+	$routes->post('submit', 'Login::submit');
+	$routes->get('logout', 'Login::logout');
+});
 
 $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($routes) {
 	$routes->get('dashboard', 'Dashboard::index');
@@ -107,6 +112,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($rout
 		$routes->group('dataProduk', function($routes) {
 			$routes->get('tambah', 'Produk::tambah');
 			$routes->get('edit/(:num)', 'Produk::edit/$1');
+			$routes->get('generateKode', 'Produk::generateKode');
 			$routes->post('submit', 'Produk::submit');
 			$routes->post('getData', 'Produk::getData');
 			$routes->post('delete', 'Produk::delete');
@@ -133,6 +139,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($rout
 	$routes->group('akun', function($routes) {
 		$routes->get('tambah', 'Akun::tambah');
 		$routes->get('profile', 'Akun::profile');
+		$routes->post('updateProfile', 'Akun::updateProfile');
 		$routes->get('edit/(:num)', 'Akun::edit/$1');
 		$routes->post('getData', 'Akun::getData');
 		$routes->post('submit', 'Akun::submit');
@@ -142,6 +149,25 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($rout
 	$routes->get('settings', 'Settings::index');
 	$routes->group('settings', function($routes) {
 		$routes->post('submit', 'Settings::submit');
+	});
+
+	$routes->get('transaksi', 'Transaksi::index');
+	$routes->group('transaksi', function($routes) {
+		$routes->get('insertTransaksi', 'Transaksi::insertTransaksi');
+		$routes->get('tambah', 'Transaksi::tambah');
+		$routes->get('getIDProduk', 'Transaksi::getIDProduk');
+		$routes->get('getListsProduk', 'Transaksi::getListsProduk');
+		$routes->get('detail/(:num)', 'Transaksi::detail/$1');
+		$routes->get('cetak/(:num)', 'Transaksi::cetak/$1');
+		$routes->post('submit', 'Transaksi::submit');
+		$routes->post('getData', 'Transaksi::getData');
+		$routes->post('delete', 'Transaksi::delete');
+		$routes->post('submitBayar', 'Transaksi::submitBayar');
+		$routes->post('deleteDaftarPesanan', 'Transaksi::deleteDaftarPesanan');
+	});
+
+	$routes->group('laporan', ['namespace' => 'App\Controllers\Admin\Laporan'], function($routes) {
+		$routes->get('penjualan', 'Penjualan::index');
 	});
 });
 

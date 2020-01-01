@@ -14,12 +14,38 @@ class Akun extends AdminController {
    }
 
    public function profile() {
+      $model = new Model($this->idUsers);
+      $footerJs['detail'] = $model->getDetailProfile();
+
       $this->data = [
          'title' => 'Profile',
-         'internalJs' => ['http://localhost:8080/adminAkunProfile.js']
+         'internalJs' => ['http://localhost:8080/adminAkunProfile.js'],
+         'footerJs' => $footerJs
       ];
 
       $this->template($this->data);
+   }
+
+   public function updateProfile() {
+      if ($this->request->isAJAX()) {
+         $response = ['status' => false, 'errors' => [], 'msg_response' => ''];
+         $post = $this->request->getVar();
+         $validate = new Validate();
+      
+         if ($this->validate($validate->generated($post))) {
+            $model = new Model($this->idUsers);
+            $model->submitUpdateProfile($post);
+
+            $response['status'] = true;
+            $response['msg_response'] = 'Data berhasil disimpan.';
+         } else {
+            $response['msg_response'] = 'Terjadi sesuatu kesalahan?';
+            $response['errors'] = \Config\Services::validation()->getErrors();
+         }
+         return $this->response->setJSON($response);
+      } else {
+         $this->notFound();
+      }
    }
 
    public function index() {
@@ -46,7 +72,7 @@ class Akun extends AdminController {
    }
    
    public function edit($id) {
-      $model = new Model();
+      $model = new Model($this->idUsers);
       $footerJs['detail'] = $model->getDetailEdit($id);
 
       $this->data = [
@@ -106,7 +132,7 @@ class Akun extends AdminController {
 
    public function getData() {
       if ($this->request->isAJAX()) {
-         $model = new Model();
+         $model = new Model($this->idUsers);
          $query = $model->getData();
    
          $i = $_POST['start'];

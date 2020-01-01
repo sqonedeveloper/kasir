@@ -1,8 +1,61 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Container, Row, Col, Breadcrumb } from 'react-bootstrap'
+import { Container, Row, Col, Breadcrumb, Form, Button } from 'react-bootstrap'
+import axios from 'axios'
+import MsgResponse from '../../MsgResponse'
+
+axios.defaults.baseURL = siteURL
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 class Profile extends Component {
+   constructor() {
+      super()
+   
+      this.state = {
+         btnLoading: false,
+         errors: {},
+         status: false,
+         msg_response: '',
+         nama: '',
+         username: '',
+         telp: '',
+         password: ''
+      }
+   
+      this._onChange = this._onChange.bind(this)
+   }
+
+   componentDidMount() {
+      this.setState({ ...content.detail })
+   }
+   
+   _onChange(e) {
+      this.setState({ [e.target.name]: e.target.value })
+   }
+
+   _submit() {
+      this.setState({ btnLoading: true })
+      var formData = new FormData()
+      formData.append('pageType', 'profile')
+      formData.append('nama', this.state.nama)
+      formData.append('username', this.state.username)
+      formData.append('telp', this.state.telp)
+      formData.append('password', this.state.password)
+      
+      axios.
+         post('/admin/akun/updateProfile', formData).
+         then(res => {
+            var response = res.data
+            this.setState({ ...response })
+         }).
+         catch(error => {
+            console.log('Error', error.message)
+         }).
+         finally(() => {
+            this.setState({ btnLoading: false })
+         })
+   }
+
    render() {
       return (
          <Container fluid={true}>
@@ -18,9 +71,44 @@ class Profile extends Component {
             </Row>
             <Row>
                <Col md={12}>
+                  <MsgResponse {...this.state} />
                   <div className="card">
                      <div className="card-body">
-                        This is some text within a card block.
+                        <Form.Group as={Row} className={this.state.errors.nama ? 'has-danger' : ''}>
+                           <Form.Label column md={2}>Nama Lengkap</Form.Label>
+                           <Col md={10}>
+                              <Form.Control name="nama" value={this.state.nama} onChange={this._onChange} size="sm" autoFocus />
+                              <Form.Control.Feedback type="invalid">{this.state.errors.nama}</Form.Control.Feedback>
+                           </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className={this.state.errors.username ? 'has-danger' : ''}>
+                           <Form.Label column md={2}>Username</Form.Label>
+                           <Col md={10}>
+                              <Form.Control value={this.state.username} size="sm" disabled={true} />
+                              <Form.Control.Feedback type="invalid">{this.state.errors.username}</Form.Control.Feedback>
+                           </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className={this.state.errors.telp ? 'has-danger' : ''}>
+                           <Form.Label column md={2}>Telepon/HP</Form.Label>
+                           <Col md={10}>
+                              <Form.Control name="telp" value={this.state.telp} onChange={this._onChange} size="sm" />
+                              <Form.Control.Feedback type="invalid">{this.state.errors.telp}</Form.Control.Feedback>
+                           </Col>
+                        </Form.Group>
+                        <Form.Group as={Row}>
+                           <Form.Label column md={2}>Password Baru</Form.Label>
+                           <Col md={10}>
+                              <Form.Control name="password" value={this.state.password} onChange={this._onChange} size="sm" type="password" />
+                           </Col>
+                        </Form.Group>
+                        <Col md={{ span: 9, offset: 3 }}>
+                           <Button
+                              variant="success"
+                              className="waves-effect waves-light"
+                              size="sm"
+                              onClick={this.state.btnLoading ? null : this._submit.bind(this)}
+                           >{this.state.btnLoading ? 'Loading...' : 'Submit'}</Button>
+                        </Col>
                      </div>
                   </div>
                </Col>

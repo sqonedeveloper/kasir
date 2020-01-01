@@ -9,15 +9,46 @@ class AdminController extends Controller {
 
    protected $helpers = [
       'style',
-      'autoload'
+      'autoload',
+      'text'
    ];
 
    var $app;
+   var $idUsers;
 
    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger) {
       parent::initController($request, $response, $logger);
 
       $this->app = new \Config\App();
+      $this->_checkIsLogin();
+   }
+
+   private function _checkIsLogin() {
+      $session = \Config\Services::session();
+
+      if (!$session->get('isLogin')) {
+         $msg = 'Anda harus <a href="'.site_url('login').'">login</a> terlebih dahulu?';
+         die($msg);
+      } else {
+         $db = \Config\Database::connect();
+
+         $username = $session->get('username');
+         $telp = $session->get('telp');
+
+         $table = $db->table('tb_users');
+         $table->where('username', $username);
+         $table->where('telp', $telp);
+
+         $get = $table->get();
+         $data = $get->getRowArray();
+
+         if (isset($data)) {
+            $this->idUsers = $data['id'];
+         } else {
+            $msg = 'Anda harus <a href="'.site_url('login').'">login</a> terlebih dahulu?';
+            die($msg);
+         }
+      }
    }
 
    public function template($content = []) {
@@ -42,6 +73,7 @@ class AdminController extends Controller {
 
       $footerJs['navigation'] = $this->_generateNavigation();
       $footerJs['sites'] = $this->_getDefaultSitesConfig();
+      $footerJs['users'] = $this->_getUsersLogin();
       if (!empty($content['footerJs'])) {
          foreach ($content['footerJs'] as $key => $val) {
             $footerJs[$key] = $val;
@@ -56,6 +88,53 @@ class AdminController extends Controller {
       $data['footerJs'] = json_encode($footerJs);
 
       echo view('AdminPanel', $data);
+   }
+
+   public function cetakStruk($content = []) {
+      $internalJs = ['http://localhost:8080/vendor.js'];
+      
+      if (!empty($content['internalJs'])) {
+         foreach ($content['internalJs'] as $key) {
+            $internalJs[] = $key;
+         }
+      }
+
+      $footerJs = [];
+      if (!empty($content['footerJs'])) {
+         foreach ($content['footerJs'] as $key => $val) {
+            $footerJs[$key] = $val;
+         }
+      }
+
+      $data['internalJs'] = script_tag($internalJs);
+      $data['footerJs'] = json_encode($footerJs);
+
+      echo view('CetakStruk', $data);
+   }
+
+   private function _getUsersLogin() {
+      $db = \Config\Database::connect();
+      $session = \Config\Services::session();
+
+      $username = $session->get('username');
+      $telp = $session->get('telp');
+
+      $table = $db->table('tb_users');
+      $table->where('username', $username);
+      $table->where('telp', $telp);
+
+      $get = $table->get();
+      $data = $get->getRowArray();
+
+      if (isset($data)) {
+         return [
+            'nama' => $data['nama'],
+            'telp' => $data['telp']
+         ];
+      } else {
+         $msg = 'Anda harus <a href="'.site_url('login').'">login</a> terlebih dahulu?';
+         die($msg);
+      }
    }
 
    private function _getDefaultSitesConfig() {
@@ -203,6 +282,17 @@ class AdminController extends Controller {
 
    public function notFound() {
       throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+   }
+
+   public function getAppSettings() {
+      $db = \Config\Database::connect();
+
+      $table = $db->table('tb_settings');
+      
+      $get = $table->get();
+      $data = $get->getRowArray();
+
+      return $data;
    }
 
 }

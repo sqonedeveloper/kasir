@@ -29,6 +29,12 @@ class Settings {
                'required' => 'Tidak boleh kosong.'
             ]
          ],
+         'alamat' => [
+            'rules' => 'required',
+            'errors' => [
+               'required' => 'Tidak boleh kosong.'
+            ]
+         ],
       ];
    }
 

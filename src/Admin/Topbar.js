@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 var sites = content.sites
+var users = content.users
 
 class Topbar extends Component {
    render() {
@@ -34,8 +35,8 @@ class Topbar extends Component {
                                        <LazyLoadImage src={baseURL + 'img/avatar.png'} effect="blur" />
                                     </div>
                                     <div className="u-text">
-                                       <h4>Fullname</h4>
-                                       <p className="text-muted">Email</p>
+                                       <h4>{users.nama}</h4>
+                                       <p className="text-muted">{users.telp}</p>
                                     </div>
                                  </div>
                               </li>

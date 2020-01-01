@@ -19,7 +19,8 @@ class Settings extends Component {
          nama_toko: '',
          telp: '',
          prefix_nota: '',
-         prefix_kode: ''
+         prefix_kode: '',
+         alamat: ''
       }
    
       this._onChange = this._onChange.bind(this)
@@ -40,6 +41,7 @@ class Settings extends Component {
       formData.append('telp', this.state.telp)
       formData.append('prefix_nota', this.state.prefix_nota)
       formData.append('prefix_kode', this.state.prefix_kode)
+      formData.append('alamat', this.state.alamat)
       
       axios.
          post('/admin/settings/submit', formData).
@@ -77,6 +79,13 @@ class Settings extends Component {
                            <Col md={10}>
                               <Form.Control name="nama_toko" value={this.state.nama_toko} onChange={this._onChange} size="sm" autoFocus />
                               <Form.Control.Feedback type="invalid">{this.state.errors.nama_toko}</Form.Control.Feedback>
+                           </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className={this.state.errors.alamat ? 'has-danger' : ''}>
+                           <Form.Label column md={2}>Alamat</Form.Label>
+                           <Col md={10}>
+                              <Form.Control name="alamat" value={this.state.alamat} onChange={this._onChange} size="sm" autoFocus />
+                              <Form.Control.Feedback type="invalid">{this.state.errors.alamat}</Form.Control.Feedback>
                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className={this.state.errors.telp ? 'has-danger' : ''}>

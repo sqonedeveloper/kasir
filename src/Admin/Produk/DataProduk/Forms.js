@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Container, Row, Col, Breadcrumb, Form, Button } from 'react-bootstrap'
+import { Container, Row, Col, Breadcrumb, Form, Button, InputGroup } from 'react-bootstrap'
 import MsgResponse from '../../../MsgResponse'
 import axios from 'axios'
 
@@ -26,6 +26,12 @@ class Forms extends Component {
       this._onChange = this._onChange.bind(this)
    }
 
+   componentDidMount() {
+      if (pageType === 'update') {
+         this.setState({ ...content.detail })
+      }
+   }
+
    _onChange(e) {
       this.setState({ [e.target.name]: e.target.value })
 
@@ -35,6 +41,18 @@ class Forms extends Component {
             harga: value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')
          })
       }
+   }
+
+   _generateKode() {
+      axios.
+         get('/admin/produk/dataProduk/generateKode').
+         then(res => {
+            var response = res.data
+            this.setState({ ...response })
+         }).
+         catch(error => {
+            console.log('Error', error.message)
+         })
    }
 
    _submit() {
@@ -47,7 +65,7 @@ class Forms extends Component {
       formData.append('harga', this.state.harga)
       formData.append('id_kategori', this.state.id_kategori)
       formData.append('id_satuan', this.state.id_satuan)
-      
+
       axios.
          post('/admin/produk/dataProduk/submit', formData).
          then(res => {
@@ -83,6 +101,7 @@ class Forms extends Component {
             </Row>
             <Row>
                <Col md={12}>
+                  <MsgResponse {...this.state} />
                   <div className="card">
                      <div className="card-body">
                         <Col md={12}>
@@ -91,7 +110,16 @@ class Forms extends Component {
                                  <Form.Group as={Row} className={this.state.errors.kode ? 'has-danger' : ''}>
                                     <Form.Label column md={3}>Barcode/Kode</Form.Label>
                                     <Col md={9}>
-                                       <Form.Control name="kode" value={this.state.kode} onChange={this._onChange} size="sm" autoFocus />
+                                       <InputGroup size="sm">
+                                          <Form.Control name="kode" value={this.state.kode} onChange={this._onChange} size="sm" autoFocus disabled={pageType === 'update' ? true : false} />
+                                          <InputGroup.Prepend>
+                                             <InputGroup.Text
+                                                title="Generate Barcode"
+                                                style={{ cursor: 'pointer' }}
+                                                onClick={pageType === 'update' ? null : this._generateKode.bind(this)}
+                                             ><i className="mdi mdi-refresh" /></InputGroup.Text>
+                                          </InputGroup.Prepend>
+                                       </InputGroup>
                                        <Form.Control.Feedback type="invalid">{this.state.errors.kode}</Form.Control.Feedback>
                                     </Col>
                                  </Form.Group>
